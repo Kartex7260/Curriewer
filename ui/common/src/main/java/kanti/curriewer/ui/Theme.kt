@@ -9,7 +9,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
 private val darkColors = darkColorScheme(
-    primary = Color.White,
+    primary = DarkToolbar1Button,
+    onPrimary = DarkOnButton,
+    secondary = DarkToolbar2Button,
+    onSecondary = DarkOnButton,
+    tertiary = DarkSearchButton,
+    onTertiary = DarkOnButton,
     primaryContainer = DarkCurrencyCode,
     surface = DarkSurface,
     surfaceVariant = DarkSurfaceVariant,
