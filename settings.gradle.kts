@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Curriewer"
 include(":app:phone")
+include(":ui:common")
