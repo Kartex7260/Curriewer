@@ -44,4 +44,5 @@ dependencies {
     implementation(libs.compose.ui.m3)
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.haze)
 }
