@@ -9,12 +9,16 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -31,9 +35,11 @@ import kanti.curriewer.ui.R
 fun BottomBar(
     modifier: Modifier = Modifier,
     hazeState: HazeState = remember { HazeState() },
-    items: Set<BottomBarItem>
+    items: Set<BottomBarItem>,
+    fab: (@Composable () -> Unit)? = null
 ) = Box(
-    modifier = modifier
+    modifier = modifier,
+    contentAlignment = Alignment.BottomCenter
 ) {
     Row(
         modifier = Modifier
@@ -55,6 +61,7 @@ fun BottomBar(
                     .fillMaxHeight()
                     .padding(all = 6.dp),
                 onClick = { },
+                shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.textButtonColors()
             ) {
                 Icon(
@@ -62,6 +69,14 @@ fun BottomBar(
                     contentDescription = null
                 )
             }
+        }
+    }
+    if (fab != null) {
+        Box(
+            modifier = Modifier
+                .padding(bottom = 46.dp)
+        ) {
+            fab()
         }
     }
 }
@@ -85,6 +100,7 @@ private fun PreviewBottomBar() {
                 contentDescription = null
             )
             BottomBar(
+                modifier = Modifier.padding(top = 100.dp),
                 hazeState = hazeState,
                 items = setOf(
                     BottomBarItem(
@@ -95,7 +111,14 @@ private fun PreviewBottomBar() {
                         iconId = R.drawable.activity,
                         route = "activity"
                     )
-                )
+                ),
+                fab = {
+                    FloatingActionButton(
+                        modifier = Modifier.size(70.dp),
+                        onClick = { }
+                    ) {
+                    }
+                }
             )
         }
     }
