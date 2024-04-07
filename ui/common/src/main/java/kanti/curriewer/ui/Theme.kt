@@ -4,28 +4,24 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
-private val lightColors = lightColorScheme(
-    surface = LightSurface,
-    surfaceVariant = LightSurfaceVariant
-)
-
 private val darkColors = darkColorScheme(
+    primary = Color.White,
+    primaryContainer = DarkCurrencyCode,
     surface = DarkSurface,
-    surfaceVariant = DarkSurfaceVariant
+    surfaceVariant = DarkSurfaceVariant,
+    onSurfaceVariant = Color.White
 )
 
 @Composable
 fun CurriewerTheme(
-    darkMode: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkMode) darkColors else lightColors
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = darkColors,
         typography = Typography,
         content = content
     )
