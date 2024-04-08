@@ -63,7 +63,7 @@ fun CurrencyCard(
         ) {
             Text(
                 modifier = Modifier.padding(top = 3.dp),
-                text = data.valueDynamic.value.toString(),
+                text = data.valueDynamic.value.formatToString(),
                 style = MaterialTheme.typography.bodyLarge
             )
             Row {
@@ -71,10 +71,10 @@ fun CurrencyCard(
                 Spacer(modifier = Modifier.width(2.dp))
 
                 val isUp = data.valueDynamic.dynamic.isUpDynamic()
+                val dynamicInPercent = data.valueDynamic.dynamicInPercent.formatToString()
                 Text(
                     modifier = Modifier.padding(bottom = 6.dp),
-                    text = if (isUp) "+${data.valueDynamic.dynamicInPercent}%"
-                    else "${data.valueDynamic.dynamicInPercent}%",
+                    text = if (isUp) "+${dynamicInPercent}%" else "${dynamicInPercent}%",
                     style = MaterialTheme.typography.labelMedium,
                     color = if (isUp) Green else Red,
                 )
@@ -93,9 +93,9 @@ private fun PreviewCurrencyCard() {
                     title = "Russian ruble",
                     code = "RUB",
                     valueDynamic = ValueDynamicData(
-                        value = 40.54f,
-                        dynamic = 4f,
-                        dynamicInPercent = 1.2f
+                        value = 11540.111f,
+                        dynamic = 1111.111f,
+                        dynamicInPercent = 1111.111f
                     )
                 )
             )
@@ -105,9 +105,9 @@ private fun PreviewCurrencyCard() {
                     title = "Russian ruble",
                     code = "RUB",
                     valueDynamic = ValueDynamicData(
-                        value = 40.54f,
-                        dynamic = -4f,
-                        dynamicInPercent = -1.2f
+                        value = 11540.111f,
+                        dynamic = -1111.111f,
+                        dynamicInPercent = -1111.111f
                     )
                 )
             )
