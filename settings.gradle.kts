@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Curriewer"
 include(":app:phone")
 include(":ui:common")
+include(":feat:currency")
