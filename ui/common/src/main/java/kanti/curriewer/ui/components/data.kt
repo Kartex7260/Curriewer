@@ -3,15 +3,15 @@ package kanti.curriewer.ui.components
 import androidx.compose.runtime.Immutable
 
 @Immutable
-data class CurrencyCardData(
+data class CurrencyData(
 	val title: String,
 	val code: String,
-	val valueDynamic: ValueDynamicData
+	val value: Double,
+	val dynamic: DynamicData
 )
 
 @Immutable
-data class ValueDynamicData(
-	val value: Float,
-	val dynamic: Float,
-	val dynamicInPercent: Float
+data class DynamicData(
+	val dynamic: Double,
+	val percent: Float
 )

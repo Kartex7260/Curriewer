@@ -13,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +25,7 @@ import kanti.curriewer.ui.Red
 @Composable
 fun CurrencyCard(
     modifier: Modifier = Modifier,
-    data: CurrencyCardData,
+    data: CurrencyData,
     contentPadding: PaddingValues = PaddingValues(all = 12.dp)
 ) = Surface(
     modifier = modifier
@@ -63,15 +62,15 @@ fun CurrencyCard(
         ) {
             Text(
                 modifier = Modifier.padding(top = 3.dp),
-                text = data.valueDynamic.value.formatToString(),
+                text = data.value.formatToString(),
                 style = MaterialTheme.typography.bodyLarge
             )
             Row {
-                DynamicIcon(dynamic = data.valueDynamic.dynamic)
+                DynamicIcon(dynamic = data.dynamic.dynamic)
                 Spacer(modifier = Modifier.width(2.dp))
 
-                val isUp = data.valueDynamic.dynamic.isUpDynamic()
-                val dynamicInPercent = data.valueDynamic.dynamicInPercent.formatToString()
+                val isUp = data.dynamic.dynamic.isUpDynamic()
+                val dynamicInPercent = data.dynamic.percent.formatToString()
                 Text(
                     modifier = Modifier.padding(bottom = 6.dp),
                     text = if (isUp) "+${dynamicInPercent}%" else "${dynamicInPercent}%",
@@ -89,25 +88,25 @@ private fun PreviewCurrencyCard() {
     CurriewerTheme {
         Column {
             CurrencyCard(
-                data = CurrencyCardData(
+                data = CurrencyData(
                     title = "Russian ruble",
                     code = "RUB",
-                    valueDynamic = ValueDynamicData(
-                        value = 11540.111f,
-                        dynamic = 1111.111f,
-                        dynamicInPercent = 1111.111f
+                    value = 11540.111,
+                    dynamic = DynamicData(
+                        dynamic = 1111.111,
+                        percent = 1111.111f
                     )
                 )
             )
             Spacer(modifier = Modifier.height(8.dp))
             CurrencyCard(
-                data = CurrencyCardData(
+                data = CurrencyData(
                     title = "Russian ruble",
                     code = "RUB",
-                    valueDynamic = ValueDynamicData(
-                        value = 11540.111f,
-                        dynamic = -1111.111f,
-                        dynamicInPercent = -1111.111f
+                    value = 11540.111,
+                    dynamic = DynamicData(
+                        dynamic = -1111.111,
+                        percent = -1111.111f
                     )
                 )
             )

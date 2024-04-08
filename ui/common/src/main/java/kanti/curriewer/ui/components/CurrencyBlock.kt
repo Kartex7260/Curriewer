@@ -26,13 +26,13 @@ import kanti.curriewer.ui.Red
 @Composable
 fun CurrencyBlock(
 	modifier: Modifier = Modifier,
-	valueDynamic: ValueDynamicData
+	currencyData: CurrencyData,
 ) = Row(
 	modifier = Modifier
 		.height(IntrinsicSize.Min)
 		.then(modifier)
 ) {
-	val isUpDynamic = valueDynamic.dynamic.isUpDynamic()
+	val isUpDynamic = currencyData.dynamic.isUpDynamic()
 	val plankColor = if (isUpDynamic) Green else Red
 	Box(
 		modifier = Modifier
@@ -51,17 +51,18 @@ fun CurrencyBlock(
 		verticalArrangement = Arrangement.SpaceBetween,
 	) {
 		Text(
-			text = valueDynamic.value.formatToString(),
+			text = currencyData.value.formatToString(),
 			style = MaterialTheme.typography.headlineLarge
 		)
 		Spacer(modifier = Modifier.height(4.dp))
 		Row(
 			verticalAlignment = Alignment.CenterVertically
 		) {
-			DynamicIcon(dynamic = valueDynamic.dynamic)
+			DynamicIcon(dynamic = currencyData.dynamic.dynamic)
+			val dynamic = currencyData.dynamic
 			Text(
-				text = "${valueDynamic.dynamic.formatToString()} " +
-						"(%${valueDynamic.dynamicInPercent.removeMinus().formatToString()})",
+				text = "${dynamic.dynamic.formatToString()} " +
+						"(%${dynamic.percent.removeMinus().formatToString()})",
 				style = MaterialTheme.typography.labelSmall
 			)
 		}
@@ -74,18 +75,26 @@ private fun PreviewCurrencyBlock() {
 	CurriewerTheme {
 		Column {
 			CurrencyBlock(
-				valueDynamic = ValueDynamicData(
-					value = 45003.453f,
-					dynamic = 300.332f,
-					dynamicInPercent = 34.4332f
+				currencyData = CurrencyData(
+					title = "",
+					code = "",
+					value = 45003.4532,
+					dynamic = DynamicData(
+						dynamic = 300.332,
+						percent = 34.4332f
+					)
 				)
 			)
 			Spacer(modifier = Modifier.height(8.dp))
 			CurrencyBlock(
-				valueDynamic = ValueDynamicData(
-					value = 45003.453f,
-					dynamic = -300.332f,
-					dynamicInPercent = -34.4332f
+				currencyData = CurrencyData(
+					title = "",
+					code = "",
+					value = 45003.4532,
+					dynamic = DynamicData(
+						dynamic = -300.332,
+						percent = -34.4332f
+					)
 				)
 			)
 		}

@@ -29,6 +29,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         fontSize = 32.sp
     ),
+    titleMedium = TextStyle(
+        fontFamily = SfProTextFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp
+    ),
     bodyLarge = TextStyle(
         fontFamily = SfProTextFontFamily,
         fontWeight = FontWeight.Medium,

@@ -19,7 +19,7 @@ import kanti.curriewer.ui.Red
 @Composable
 fun DynamicIcon(
     modifier: Modifier = Modifier,
-    dynamic: Float
+    dynamic: Double
 ) {
     val isUp = dynamic.isUpDynamic()
     val iconId = if (isUp) R.drawable.arrow_up else R.drawable.arrow_bottom
@@ -42,8 +42,8 @@ fun DynamicIcon(
 private fun PreviewDynamicIcon() {
     CurriewerTheme {
         Column {
-            DynamicIcon(dynamic = 1f)
-            DynamicIcon(dynamic = -1f)
+            DynamicIcon(dynamic = 1.0)
+            DynamicIcon(dynamic = -1.0)
         }
     }
 }
