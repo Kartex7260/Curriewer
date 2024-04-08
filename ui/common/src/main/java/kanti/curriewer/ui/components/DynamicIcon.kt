@@ -21,7 +21,7 @@ fun DynamicIcon(
     modifier: Modifier = Modifier,
     dynamic: Float
 ) {
-    val isUp = isUpDynamic(dynamic)
+    val isUp = dynamic.isUpDynamic()
     val iconId = if (isUp) R.drawable.arrow_up else R.drawable.arrow_bottom
     val color = if (isUp) Green else Red
     Box(

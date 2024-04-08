@@ -24,6 +24,11 @@ private val SfProTextFontFamily = FontFamily(
 )
 
 val Typography = Typography(
+    headlineLarge = TextStyle(
+        fontFamily = SfProTextFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 32.sp
+    ),
     bodyLarge = TextStyle(
         fontFamily = SfProTextFontFamily,
         fontWeight = FontWeight.Medium,

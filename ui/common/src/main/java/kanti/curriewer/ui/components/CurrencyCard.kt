@@ -63,32 +63,25 @@ fun CurrencyCard(
         ) {
             Text(
                 modifier = Modifier.padding(top = 3.dp),
-                text = data.value.toString(),
+                text = data.valueDynamic.value.toString(),
                 style = MaterialTheme.typography.bodyLarge
             )
             Row {
-                DynamicIcon(dynamic = data.dynamic)
+                DynamicIcon(dynamic = data.valueDynamic.dynamic)
                 Spacer(modifier = Modifier.width(2.dp))
 
-                val isUp = isUpDynamic(data.dynamic)
+                val isUp = data.valueDynamic.dynamic.isUpDynamic()
                 Text(
                     modifier = Modifier.padding(bottom = 6.dp),
-                    text = if (isUp) "+${data.dynamic}%" else "${data.dynamic}%",
+                    text = if (isUp) "+${data.valueDynamic.dynamicInPercent}%"
+                    else "${data.valueDynamic.dynamicInPercent}%",
                     style = MaterialTheme.typography.labelMedium,
-                    color = if (isUpDynamic(data.dynamic)) Green else Red,
+                    color = if (isUp) Green else Red,
                 )
             }
         }
     }
 }
-
-@Immutable
-data class CurrencyCardData(
-    val title: String,
-    val code: String,
-    val value: Float,
-    val dynamic: Float
-)
 
 @Preview
 @Composable
@@ -99,8 +92,11 @@ private fun PreviewCurrencyCard() {
                 data = CurrencyCardData(
                     title = "Russian ruble",
                     code = "RUB",
-                    value = 40.54f,
-                    dynamic = 1.2f
+                    valueDynamic = ValueDynamicData(
+                        value = 40.54f,
+                        dynamic = 4f,
+                        dynamicInPercent = 1.2f
+                    )
                 )
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -108,8 +104,11 @@ private fun PreviewCurrencyCard() {
                 data = CurrencyCardData(
                     title = "Russian ruble",
                     code = "RUB",
-                    value = 40.54f,
-                    dynamic = -1.2f
+                    valueDynamic = ValueDynamicData(
+                        value = 40.54f,
+                        dynamic = -4f,
+                        dynamicInPercent = -1.2f
+                    )
                 )
             )
         }
