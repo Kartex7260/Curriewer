@@ -44,54 +44,11 @@ fun CurrencyCard(
         ),
     color = MaterialTheme.colorScheme.surfaceVariant
 ) {
-    Row(
+    CurrencyContent(
         modifier = Modifier
             .padding(contentPadding),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier.height(50.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                modifier = Modifier.padding(top = 3.dp),
-                text = data.title,
-                style = MaterialTheme.typography.bodyLarge
-            )
-            Text(
-                modifier = Modifier.padding(bottom = 6.dp),
-                text = data.code,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.primaryContainer
-            )
-        }
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .height(50.dp),
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                modifier = Modifier.padding(top = 3.dp),
-                text = data.value.formatToString(),
-                style = MaterialTheme.typography.bodyLarge
-            )
-            Row {
-                DynamicIcon(dynamic = data.dynamic.dynamic)
-                Spacer(modifier = Modifier.width(2.dp))
-
-                val isUp = data.dynamic.dynamic.isUpDynamic()
-                val dynamicInPercent = data.dynamic.percent.formatToString()
-                Text(
-                    modifier = Modifier.padding(bottom = 6.dp),
-                    text = if (isUp) "+${dynamicInPercent}%" else "${dynamicInPercent}%",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = if (isUp) Green else Red,
-                )
-            }
-        }
-    }
+        data = data
+    )
 }
 
 @Preview
