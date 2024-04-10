@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="watchlist">Watchlist</string>
+    <string name="buy">Buy</string>
+    <string name="sell">Sell</string>
+    <string name="related_currencies">Related currencies</string>
+    <string name="see_all">See all</string>
+    <string name="choose_currency">Choose a currency</string>
 </resources>

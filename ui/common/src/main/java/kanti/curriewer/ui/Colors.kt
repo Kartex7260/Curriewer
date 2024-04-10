@@ -17,3 +17,5 @@ val DarkSearchButton = Color(0xFF212126)
 
 val DarkOnButton = Color(0xFFB9C1D9)
 
+val DarkDivider = Color(0xFF26272E)
+

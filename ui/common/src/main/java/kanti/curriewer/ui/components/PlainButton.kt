@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
@@ -35,20 +34,20 @@ fun PlainButton(
 	onClick: () -> Unit,
 	content: @Composable () -> Unit
 ) {
+	val selfModifier = Modifier
+		.clickable(
+			interactionSource = remember { MutableInteractionSource() },
+			indication = rememberRipple(),
+			role = Role.Button,
+			onClick = onClick
+		)
+		.background(
+			color = colors.background,
+			shape = RoundedCornerShape(10.dp)
+		)
+		.padding(contentPadding)
 	Box(
-		modifier = Modifier
-			.clickable(
-				interactionSource = remember { MutableInteractionSource() },
-				indication = rememberRipple(),
-				role = Role.Button,
-				onClick = onClick
-			)
-			.background(
-				color = colors.background,
-				shape = RoundedCornerShape(10.dp)
-			)
-			.padding(contentPadding)
-			.then(modifier),
+		modifier = modifier.then(selfModifier),
 		contentAlignment = Alignment.Center
 	) {
 		CompositionLocalProvider(

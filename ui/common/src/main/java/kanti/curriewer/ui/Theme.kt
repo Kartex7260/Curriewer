@@ -18,7 +18,8 @@ private val darkColors = darkColorScheme(
     primaryContainer = DarkCurrencyCode,
     surface = DarkSurface,
     surfaceVariant = DarkSurfaceVariant,
-    onSurfaceVariant = Color.White
+    onSurfaceVariant = Color.White,
+    outlineVariant = DarkDivider
 )
 
 @Composable

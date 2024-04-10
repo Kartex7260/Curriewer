@@ -1,6 +1,8 @@
 plugins {
 	alias(libs.plugins.androidLibrary)
 	alias(libs.plugins.jetbrainsKotlinAndroid)
+	alias(libs.plugins.kapt)
+	alias(libs.plugins.hilt)
 }
 
 android {
@@ -48,4 +50,8 @@ dependencies {
 	implementation(libs.compose.navigation)
 
 	implementation(project(":ui:common"))
+
+	implementation(libs.hilt.android)
+	kapt(libs.hilt.compiler)
+	implementation(libs.hilt.compose)
 }

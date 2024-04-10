@@ -7,6 +7,8 @@ composeActivity = "1.8.2"
 haze = "0.6.2"
 composeCompiler = "1.5.11"
 composeNavigation = "2.7.7"
+hilt = "2.51.1"
+hilt-compose = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -16,10 +18,15 @@ compose-ui-m3 = { group = "androidx.compose.material3", name = "material3" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation"}
-haze = { group = "dev.chrisbanes.haze", name = "haze", version.ref="haze" }
+haze = { group = "dev.chrisbanes.haze", name = "haze", version.ref = "haze" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-compose" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref="hilt" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref="kotlin" }
 
