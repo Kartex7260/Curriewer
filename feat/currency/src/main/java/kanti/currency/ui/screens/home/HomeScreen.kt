@@ -22,7 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kanti.currency.R
 import kanti.currency.ui.screens.CurrencyDestinations
-import kanti.currency.ui.screens.main.viewmodel.HomeViewModel
+import kanti.currency.ui.screens.home.viewmodel.HomeViewModel
 import kanti.curriewer.ui.CurriewerTheme
 import kanti.curriewer.ui.components.CurrencyCard
 import kanti.curriewer.ui.components.CurrencyData
@@ -36,7 +36,7 @@ fun HomeScreen(
 ) {
 	RootHomeScreen(
 		base = viewModel.baseCurrency.collectAsState().value,
-		items = viewModel.curriencies.collectAsState().value,
+		items = viewModel.currencies.collectAsState().value,
 		onClickCurrencyCard = { currencyCode ->
 			navController.navigate(
 				route = "${CurrencyDestinations.CURRENCY_DETAIL}/$currencyCode"
@@ -47,7 +47,7 @@ fun HomeScreen(
 
 @Composable
 fun RootHomeScreen(
-	base: CurrencyData,
+	base: String,
 	items: List<CurrencyData> = listOf(),
 	onClickCurrencyCard: (code: String) -> Unit = {},
 ) {
@@ -62,12 +62,12 @@ fun RootHomeScreen(
 				horizontalArrangement = Arrangement.SpaceBetween
 			) {
 				Text(
-					text = base.title,
+					text = base,
 					style = MaterialTheme.typography.headlineLarge,
 					color = Color.White
 				)
 				Text(
-					text = "(${base.code})",
+					text = "($base)",
 					style = MaterialTheme.typography.titleMedium,
 					color = MaterialTheme.colorScheme.outline
 				)
@@ -111,15 +111,7 @@ private fun PreviewRootHomeScreen() {
 	CurriewerTheme {
 		Surface {
 			RootHomeScreen(
-				base = CurrencyData(
-					title = "Russian ruble",
-					code = "RUB",
-					value = 2356.13561,
-					dynamic = DynamicData(
-						dynamic = 462.362,
-						percent = 3.153f
-					)
-				),
+				base = "RUB",
 				items = listOf(
 					CurrencyData(
 						title = "Test",

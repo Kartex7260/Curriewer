@@ -49,6 +49,8 @@ dependencies {
 	implementation(libs.haze)
 	implementation(libs.compose.navigation)
 
+	implementation(project(":data:app"))
+	implementation(project(":domain:currencies:manipulation"))
 	implementation(project(":ui:common"))
 
 	implementation(libs.hilt.android)
