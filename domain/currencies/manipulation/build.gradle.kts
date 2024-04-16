@@ -38,4 +38,5 @@ dependencies {
 	implementation(libs.kotlinx.datetime)
 
 	implementation(project(":data:currency"))
+	implementation(project(":shared"))
 }

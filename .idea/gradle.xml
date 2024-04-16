@@ -15,9 +15,10 @@
             <option value="$PROJECT_DIR$/data/currency" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/domain/currencies" />
-            <option value="$PROJECT_DIR$/domain/currencies/maniplation" />
+            <option value="$PROJECT_DIR$/domain/currencies/manipulation" />
             <option value="$PROJECT_DIR$/feat" />
             <option value="$PROJECT_DIR$/feat/currency" />
+            <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/ui/common" />
           </set>

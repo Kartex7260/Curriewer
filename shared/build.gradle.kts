@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-	namespace = "kanti.curriewer.data.model.currency"
+	namespace = "kanti.curriewer.shared"
 	compileSdk = 34
 
 	defaultConfig {
@@ -34,8 +34,5 @@ android {
 
 dependencies {
 
-	implementation(libs.hilt.android)
 	implementation(libs.kotlinx.datetime)
-
-	implementation(project(":shared"))
 }
