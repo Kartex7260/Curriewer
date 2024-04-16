@@ -6,9 +6,11 @@ import kanti.curriewer.data.model.currency.datasource.remote.CurrencyRemoteDataS
 import kanti.curriewer.shared.result.DataError
 import kanti.curriewer.shared.result.DataResult
 import kanti.curriewer.shared.result.NotFoundError
+import kanti.curriewer.shared.result.ValueIsNullError
 import kanti.curriewer.shared.result.alsoIfNotError
 import kanti.curriewer.shared.result.runIfNotError
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
@@ -67,7 +69,49 @@ class CurrencyRepositoryImpl @Inject constructor(
 		end: Instant,
 		start: Instant,
 		accuracy: RangeAccuracy
-	): DataResult<List<CurrencyWithTime>, DataError> {
-		TODO("Not yet implemented")
+	): DataResult<List<CurrencyWithTime>, DataError> = withContext(Dispatchers.Default) {
+		val titlesDeferred = async { remoteDataSource.getAllCurrenciesData() }
+		val valuesDeferred = async {
+			remoteDataSource.getRange(
+				baseCurrencyCode = baseCurrencyCode,
+				currencyCode = currencyCode,
+				end = end,
+				start = start,
+				accuracy = accuracy
+			)
+		}
+		titlesDeferred.start()
+		valuesDeferred.start()
+
+		val titlesResult = titlesDeferred.await()
+		val titlesError = titlesResult.error
+		if (titlesError != null)
+			return@withContext DataResult.Error(titlesError)
+
+		val titles = titlesResult.value ?: return@withContext DataResult
+			.Error(ValueIsNullError("${CurrencyRepositoryImpl::class.java.name}: getRange: titles"))
+		launch {
+			dataLocalDataSource.replace(titles)
+		}
+
+		val valuesResult = valuesDeferred.await()
+		val valuesError = valuesResult.error
+		if (valuesError != null)
+			return@withContext DataResult.Error(valuesError)
+
+		val values = valuesResult.value ?: return@withContext DataResult
+			.Error(ValueIsNullError("${CurrencyRepositoryImpl::class.java.name}: getRange: values"))
+		launch {
+			valueLocalDataSource.replace(values)
+		}
+
+		return@withContext DataResult.Success(
+			value = values
+				.map { currency ->
+					currency.copy(
+						title = titles.firstOrNull { it.code == "" }?.title ?: currency.code
+					)
+				}
+		)
 	}
 }
