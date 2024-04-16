@@ -9,5 +9,8 @@ sealed class DataResult<T, E : Err>(
 
 	class Success<T, E : Err>(value: T) : DataResult<T, E>(value = value)
 
-	class Error<T, E : Err>(error: E) : DataResult<T, E>(error = error)
+	class Error<T, E : Err>(
+		error: E,
+		value: T? = null
+	) : DataResult<T, E>(value = value, error = error)
 }

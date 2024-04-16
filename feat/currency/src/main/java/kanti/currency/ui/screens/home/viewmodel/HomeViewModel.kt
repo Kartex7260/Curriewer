@@ -8,7 +8,7 @@ import kanti.curriewer.data.model.currency.CurrencyRepository
 import kanti.curriewer.domain.currencies.GetCurrencySpansUseCase
 import kanti.curriewer.shared.result.DataError
 import kanti.curriewer.shared.result.DataResult
-import kanti.curriewer.shared.result.ifNoError
+import kanti.curriewer.shared.result.runIfNotError
 import kanti.curriewer.ui.components.CurrencyUiState
 import kanti.curriewer.ui.components.CurrencySpanUiState
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
 	val baseCurrency: StateFlow<DataResult<CurrencyUiState, DataError>> = appDataRepository.appData
 		.map { appData ->
 			val titleResult = currencyRepository.getTitleByCode(currencyCode = appData.baseCurrencyCode)
-			titleResult.ifNoError { title ->
+			titleResult.runIfNotError { title ->
 				DataResult.Success(CurrencyUiState(title = title, code = appData.baseCurrencyCode))
 			}
 		}
@@ -45,7 +45,7 @@ class HomeViewModel @Inject constructor(
 				baseCurrencyCode = appData.baseCurrencyCode
 			)
 
-			result.ifNoError { currencySpans ->
+			result.runIfNotError { currencySpans ->
 				val currencies = currencySpans.map { it.toCurrencySpan() }
 					.toList()
 					.sortedBy { it.data.code }
