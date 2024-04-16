@@ -2,7 +2,7 @@ package kanti.curriewer.ui.components
 
 import java.util.Locale
 
-fun DynamicData.isUpDynamic() = dynamic.isUpDynamic()
+fun DynamicUiState.isUpDynamic() = dynamic.isUpDynamic()
 
 fun Double.isUpDynamic() = this >= 0
 

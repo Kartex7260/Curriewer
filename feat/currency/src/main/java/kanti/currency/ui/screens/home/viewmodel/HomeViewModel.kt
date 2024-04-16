@@ -2,10 +2,15 @@ package kanti.currency.ui.screens.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kanti.currency.ui.util.toCurrencyData
+import kanti.currency.ui.util.toCurrencySpan
 import kanti.curriewer.data.app.AppDataRepository
+import kanti.curriewer.data.model.currency.CurrencyRepository
 import kanti.curriewer.domain.currencies.GetCurrencySpansUseCase
-import kanti.curriewer.ui.components.CurrencyData
+import kanti.curriewer.shared.result.DataError
+import kanti.curriewer.shared.result.DataResult
+import kanti.curriewer.shared.result.ifNoError
+import kanti.curriewer.ui.components.CurrencyUiState
+import kanti.curriewer.ui.components.CurrencySpanUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -17,30 +22,41 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
 	appDataRepository: AppDataRepository,
+	currencyRepository: CurrencyRepository,
 	getCurrencySpansUseCase: GetCurrencySpansUseCase
 ) : ViewModel() {
 
-	val baseCurrency: StateFlow<String> = appDataRepository.appData
-		.map { it.baseCurrencyCode }
+	val baseCurrency: StateFlow<DataResult<CurrencyUiState, DataError>> = appDataRepository.appData
+		.map { appData ->
+			val titleResult = currencyRepository.getTitleByCode(currencyCode = appData.baseCurrencyCode)
+			titleResult.ifNoError { title ->
+				DataResult.Success(CurrencyUiState(title = title, code = appData.baseCurrencyCode))
+			}
+		}
 		.stateIn(
 			scope = viewModelScope,
 			started = SharingStarted.Eagerly,
-			initialValue = ""
+			initialValue = DataResult.Success(CurrencyUiState(title = "", code = ""))
 		)
 
-	val currencies: StateFlow<List<CurrencyData>> = appDataRepository.appData
+	val currencies: StateFlow<DataResult<List<CurrencySpanUiState>, DataError>> = appDataRepository.appData
 		.map { appData ->
-			getCurrencySpansUseCase(
+			val result = getCurrencySpansUseCase(
 				baseCurrencyCode = appData.baseCurrencyCode
-			).map { it.toCurrencyData() }
-				.toList()
-				.sortedBy { it.code }
+			)
+
+			result.ifNoError { currencySpans ->
+				val currencies = currencySpans.map { it.toCurrencySpan() }
+					.toList()
+					.sortedBy { it.data.code }
+				DataResult.Success(currencies)
+			}
 		}
 		.flowOn(Dispatchers.Default)
 		.stateIn(
 			scope = viewModelScope,
 			started = SharingStarted.Eagerly,
-			initialValue = listOf()
+			initialValue = DataResult.Success(listOf())
 		)
 
 }

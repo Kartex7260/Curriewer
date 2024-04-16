@@ -34,19 +34,22 @@ import kanti.curriewer.ui.CurriewerTheme
 import kanti.curriewer.ui.components.BoxButton
 import kanti.curriewer.ui.components.CurrencyBlock
 import kanti.curriewer.ui.components.CurrencyContent
-import kanti.curriewer.ui.components.CurrencyData
-import kanti.curriewer.ui.components.DynamicData
+import kanti.curriewer.ui.components.CurrencySpanUiState
+import kanti.curriewer.ui.components.CurrencyUiState
+import kanti.curriewer.ui.components.DynamicUiState
 import kanti.curriewer.ui.components.PlainButton
 import kanti.curriewer.ui.components.PlainButtonDefaults
 
 @Composable
 fun CurrencyDetailScreen() {
 	RootCurrencyDetailScreen(
-		currencyData = CurrencyData(
-			title = "Test",
-			code = "TST",
+		currencySpan = CurrencySpanUiState(
+			data = CurrencyUiState(
+				title = "Test",
+				code = "TST"
+			),
 			value = 1366315.1351,
-			dynamic = DynamicData(
+			dynamic = DynamicUiState(
 				dynamic = 16346.135,
 				percent = 3113.515f
 			)
@@ -56,8 +59,8 @@ fun CurrencyDetailScreen() {
 
 @Composable
 fun RootCurrencyDetailScreen(
-	currencyData: CurrencyData,
-	currencies: List<CurrencyData> = listOf(),
+	currencySpan: CurrencySpanUiState,
+	currencies: List<CurrencySpanUiState> = listOf(),
 	onClickCurrencyContent: (code: String) -> Unit = {},
 	onBack: () -> Unit = {},
 ) {
@@ -81,7 +84,7 @@ fun RootCurrencyDetailScreen(
 			}
 
 			Text(
-				text = currencyData.title,
+				text = currencySpan.data.title,
 				style = MaterialTheme.typography.titleMedium
 			)
 
@@ -105,7 +108,7 @@ fun RootCurrencyDetailScreen(
 				// Current currency info
 				CurrencyBlock(
 					modifier = Modifier.padding(start = 24.dp),
-					currencyData = currencyData
+					currencySpan = currencySpan
 				)
 				Spacer(modifier = Modifier.height(32.dp))
 
@@ -172,7 +175,7 @@ fun RootCurrencyDetailScreen(
 
 			items(
 				count = currencies.size,
-				key = { index -> currencies[index].code }
+				key = { index -> currencies[index].data.code }
 			) { otherCurrencyIndex ->
 				val otherCurrency = currencies[otherCurrencyIndex]
 				CurrencyContent(
@@ -181,13 +184,13 @@ fun RootCurrencyDetailScreen(
 							interactionSource = remember { MutableInteractionSource() },
 							indication = rememberRipple(),
 							role = Role.Button,
-							onClick = { onClickCurrencyContent(otherCurrency.code) }
+							onClick = { onClickCurrencyContent(otherCurrency.data.code) }
 						)
 						.padding(
 							horizontal = 24.dp,
 							vertical = 12.dp
 						),
-					data = otherCurrency
+					uiState = otherCurrency
 				)
 				if (otherCurrencyIndex < currencies.size - 1) {
 					HorizontalDivider(
@@ -205,48 +208,58 @@ private fun PreviewRootCurrencyDetailScreen() {
 	CurriewerTheme {
 		Surface {
 			RootCurrencyDetailScreen(
-				currencyData = CurrencyData(
-					title = "Test",
-					code = "TST",
+				currencySpan = CurrencySpanUiState(
+					data = CurrencyUiState(
+						title = "Test",
+						code = "TST"
+					),
 					value = 1366315.1351,
-					dynamic = DynamicData(
+					dynamic = DynamicUiState(
 						dynamic = 16346.135,
 						percent = 3113.515f
 					)
 				),
 				currencies = listOf(
-					CurrencyData(
-						title = "Test",
-						code = "TST",
+					CurrencySpanUiState(
+						data = CurrencyUiState(
+							title = "Test",
+							code = "TST"
+						),
 						value = 1366315.1351,
-						dynamic = DynamicData(
+						dynamic = DynamicUiState(
 							dynamic = 16346.135,
 							percent = 3113.515f
 						)
 					),
-					CurrencyData(
-						title = "Dollar US",
-						code = "USD",
+					CurrencySpanUiState(
+						data = CurrencyUiState(
+							title = "Dollar US",
+							code = "USD"
+						),
 						value = .1351,
-						dynamic = DynamicData(
+						dynamic = DynamicUiState(
 							dynamic = -16346.135,
 							percent = -3113.515f
 						)
 					),
-					CurrencyData(
-						title = "Russian ruble",
-						code = "RUB",
+					CurrencySpanUiState(
+						data = CurrencyUiState(
+							title = "Russian ruble",
+							code = "RUB"
+						),
 						value = 1366315.1351,
-						dynamic = DynamicData(
+						dynamic = DynamicUiState(
 							dynamic = 16346.135,
 							percent = 3113.515f
 						)
 					),
-					CurrencyData(
-						title = "Test2",
-						code = "TS2",
+					CurrencySpanUiState(
+						data = CurrencyUiState(
+							title = "Test2",
+							code = "TS2"
+						),
 						value = 1366315.1351,
-						dynamic = DynamicData(
+						dynamic = DynamicUiState(
 							dynamic = 16346.135,
 							percent = 3113.515f
 						)

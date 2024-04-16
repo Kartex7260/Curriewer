@@ -22,7 +22,7 @@ import kanti.curriewer.ui.Red
 @Composable
 fun CurrencyContent(
 	modifier: Modifier = Modifier,
-	data: CurrencyData
+	uiState: CurrencySpanUiState
 ) {
 	Row(
 		modifier = modifier,
@@ -34,12 +34,12 @@ fun CurrencyContent(
 		) {
 			Text(
 				modifier = Modifier.padding(top = 3.dp),
-				text = data.title,
+				text = uiState.data.title,
 				style = MaterialTheme.typography.bodyLarge
 			)
 			Text(
 				modifier = Modifier.padding(bottom = 6.dp),
-				text = data.code,
+				text = uiState.data.code,
 				style = MaterialTheme.typography.labelMedium,
 				color = MaterialTheme.colorScheme.primaryContainer
 			)
@@ -53,15 +53,15 @@ fun CurrencyContent(
 		) {
 			Text(
 				modifier = Modifier.padding(top = 3.dp),
-				text = data.value.formatToString(),
+				text = uiState.value.formatToString(),
 				style = MaterialTheme.typography.bodyLarge
 			)
 			Row {
-				DynamicIcon(dynamic = data.dynamic.dynamic)
+				DynamicIcon(dynamic = uiState.dynamic.dynamic)
 				Spacer(modifier = Modifier.width(2.dp))
 
-				val isUp = data.dynamic.dynamic.isUpDynamic()
-				val dynamicInPercent = data.dynamic.percent.formatToString()
+				val isUp = uiState.dynamic.dynamic.isUpDynamic()
+				val dynamicInPercent = uiState.dynamic.percent.formatToString()
 				Text(
 					modifier = Modifier.padding(bottom = 6.dp),
 					text = if (isUp) "+${dynamicInPercent}%" else "${dynamicInPercent}%",
@@ -79,11 +79,13 @@ private fun PreviewCurrencyContent() {
 	CurriewerTheme {
 		Surface {
 			CurrencyContent(
-				data = CurrencyData(
-					title = "Test",
-					code = "TST",
+				uiState = CurrencySpanUiState(
+					data = CurrencyUiState(
+						title = "Test",
+						code = "TST"
+					),
 					value = 1.0,
-					dynamic = DynamicData(
+					dynamic = DynamicUiState(
 						dynamic = .5,
 						percent = 200.0f
 					)

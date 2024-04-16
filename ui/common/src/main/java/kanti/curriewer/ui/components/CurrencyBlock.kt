@@ -26,13 +26,13 @@ import kanti.curriewer.ui.Red
 @Composable
 fun CurrencyBlock(
 	modifier: Modifier = Modifier,
-	currencyData: CurrencyData,
+	currencySpan: CurrencySpanUiState,
 ) = Row(
 	modifier = Modifier
 		.height(IntrinsicSize.Min)
 		.then(modifier)
 ) {
-	val isUpDynamic = currencyData.dynamic.isUpDynamic()
+	val isUpDynamic = currencySpan.dynamic.isUpDynamic()
 	val plankColor = if (isUpDynamic) Green else Red
 	Box(
 		modifier = Modifier
@@ -51,15 +51,15 @@ fun CurrencyBlock(
 		verticalArrangement = Arrangement.SpaceBetween,
 	) {
 		Text(
-			text = currencyData.value.formatToString(),
+			text = currencySpan.value.formatToString(),
 			style = MaterialTheme.typography.headlineLarge
 		)
 		Spacer(modifier = Modifier.height(4.dp))
 		Row(
 			verticalAlignment = Alignment.CenterVertically
 		) {
-			DynamicIcon(dynamic = currencyData.dynamic.dynamic)
-			val dynamic = currencyData.dynamic
+			DynamicIcon(dynamic = currencySpan.dynamic.dynamic)
+			val dynamic = currencySpan.dynamic
 			Text(
 				text = "${dynamic.dynamic.formatToString()} " +
 						"(%${dynamic.percent.removeMinus().formatToString()})",
@@ -75,11 +75,13 @@ private fun PreviewCurrencyBlock() {
 	CurriewerTheme {
 		Column {
 			CurrencyBlock(
-				currencyData = CurrencyData(
-					title = "",
-					code = "",
+				currencySpan = CurrencySpanUiState(
+					data = CurrencyUiState(
+						title = "",
+						code = "",
+					),
 					value = 45003.4532,
-					dynamic = DynamicData(
+					dynamic = DynamicUiState(
 						dynamic = 300.332,
 						percent = 34.4332f
 					)
@@ -87,11 +89,13 @@ private fun PreviewCurrencyBlock() {
 			)
 			Spacer(modifier = Modifier.height(8.dp))
 			CurrencyBlock(
-				currencyData = CurrencyData(
-					title = "",
-					code = "",
+				currencySpan = CurrencySpanUiState(
+					data = CurrencyUiState(
+						title = "",
+						code = "",
+					),
 					value = 45003.4532,
-					dynamic = DynamicData(
+					dynamic = DynamicUiState(
 						dynamic = -300.332,
 						percent = -34.4332f
 					)

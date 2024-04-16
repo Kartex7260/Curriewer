@@ -50,10 +50,14 @@ dependencies {
 	implementation(libs.compose.navigation)
 
 	implementation(project(":data:app"))
+	implementation(project(":data:currency"))
 	implementation(project(":domain:currencies:manipulation"))
+	implementation(project(":shared"))
 	implementation(project(":ui:common"))
 
 	implementation(libs.hilt.android)
 	kapt(libs.hilt.compiler)
 	implementation(libs.hilt.compose)
+
+	implementation(libs.kotlinx.datetime)
 }

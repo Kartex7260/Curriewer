@@ -3,6 +3,9 @@ package kanti.curriewer.domain.currencies
 import kanti.curriewer.data.model.currency.CurrencyRepository
 import kanti.curriewer.data.model.currency.RangeAccuracy
 import kanti.curriewer.shared.minusDay
+import kanti.curriewer.shared.result.DataError
+import kanti.curriewer.shared.result.DataResult
+import kanti.curriewer.shared.result.ValueIsNullError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,20 +25,34 @@ class GetCurrencySpansUseCase @Inject constructor(
 		end: Instant = Clock.System.now(),
 		start: Instant = end.minusDay(),
 		accuracy: RangeAccuracy = RangeAccuracy.DAY
-	): Flow<CurrencySpan> = withContext(Dispatchers.IO) {
-		return@withContext flow {
-			currencyRepository.getAllCurrencyCodes().forEach { currencyCode ->
+	): DataResult<Flow<CurrencySpan>, DataError> = withContext(Dispatchers.IO) {
+		val result = currencyRepository.getAllCurrencyCodes()
+
+		val error = result.error
+		if (error != null)
+			return@withContext DataResult.Error(error)
+
+		val value = result.value
+			?: return@withContext DataResult
+				.Error(ValueIsNullError(GetCurrencySpansUseCase::class.java.name))
+
+		val flow = flow {
+			value.forEach { currencyCode ->
 				launch {
-					val currencySpan = getCurrencySpanUseCase(
+					val spanResult = getCurrencySpanUseCase(
 						baseCurrencyCode = baseCurrencyCode,
 						currencyCode = currencyCode,
 						end = end,
 						start = start,
 						accuracy = accuracy
 					)
-					emit(currencySpan)
+
+					val currencySpan = spanResult.value
+					if (currencySpan != null)
+						emit(currencySpan)
 				}
 			}
 		}
+		return@withContext DataResult.Success(flow)
 	}
 }

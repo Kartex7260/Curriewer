@@ -12,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -25,8 +26,9 @@ import kanti.currency.ui.screens.CurrencyDestinations
 import kanti.currency.ui.screens.home.viewmodel.HomeViewModel
 import kanti.curriewer.ui.CurriewerTheme
 import kanti.curriewer.ui.components.CurrencyCard
-import kanti.curriewer.ui.components.CurrencyData
-import kanti.curriewer.ui.components.DynamicData
+import kanti.curriewer.ui.components.CurrencySpanUiState
+import kanti.curriewer.ui.components.CurrencyUiState
+import kanti.curriewer.ui.components.DynamicUiState
 import kanti.curriewer.ui.components.PlainButton
 
 @Composable
@@ -34,9 +36,15 @@ fun HomeScreen(
 	navController: NavController = rememberNavController(),
 	viewModel: HomeViewModel = hiltViewModel()
 ) {
+	val baseCurrencyResult by viewModel.baseCurrency.collectAsState()
+	val itemsResult by viewModel.currencies.collectAsState()
+
+	val baseCurrency = baseCurrencyResult.value ?: CurrencyUiState(title = "", code = "")
+	val items = itemsResult.value ?: listOf()
+
 	RootHomeScreen(
-		base = viewModel.baseCurrency.collectAsState().value,
-		items = viewModel.currencies.collectAsState().value,
+		baseCurrency = baseCurrency,
+		items = items,
 		onClickCurrencyCard = { currencyCode ->
 			navController.navigate(
 				route = "${CurrencyDestinations.CURRENCY_DETAIL}/$currencyCode"
@@ -47,8 +55,8 @@ fun HomeScreen(
 
 @Composable
 fun RootHomeScreen(
-	base: String,
-	items: List<CurrencyData> = listOf(),
+	baseCurrency: CurrencyUiState,
+	items: List<CurrencySpanUiState> = listOf(),
 	onClickCurrencyCard: (code: String) -> Unit = {},
 ) {
 	LazyColumn(
@@ -62,12 +70,12 @@ fun RootHomeScreen(
 				horizontalArrangement = Arrangement.SpaceBetween
 			) {
 				Text(
-					text = base,
+					text = baseCurrency.title,
 					style = MaterialTheme.typography.headlineLarge,
 					color = Color.White
 				)
 				Text(
-					text = "($base)",
+					text = "(${baseCurrency.code})",
 					style = MaterialTheme.typography.titleMedium,
 					color = MaterialTheme.colorScheme.outline
 				)
@@ -91,10 +99,10 @@ fun RootHomeScreen(
 
 		items(
 			items = items,
-			key = { it.code }
+			key = { it.data.code }
 		) { currencyData ->
 			CurrencyCard(data = currencyData) {
-				onClickCurrencyCard(currencyData.code)
+				onClickCurrencyCard(currencyData.data.code)
 			}
 			Spacer(modifier = Modifier.height(16.dp))
 		}
@@ -111,22 +119,29 @@ private fun PreviewRootHomeScreen() {
 	CurriewerTheme {
 		Surface {
 			RootHomeScreen(
-				base = "RUB",
+				baseCurrency = CurrencyUiState(
+					title = "Russian ruble",
+					code = "RUB"
+				),
 				items = listOf(
-					CurrencyData(
-						title = "Test",
-						code = "TST",
+					CurrencySpanUiState(
+						data = CurrencyUiState(
+							title = "Test",
+							code = "TST"
+						),
 						value = 51514513.351,
-						dynamic = DynamicData(
+						dynamic = DynamicUiState(
 							dynamic = 31624.4672,
 							percent = 65.2562f
 						)
 					),
-					CurrencyData(
-						title = "Russian ruble",
-						code = "RUB",
+					CurrencySpanUiState(
+						data = CurrencyUiState(
+							title = "Russian ruble",
+							code = "RUB"
+						),
 						value = 13.4531,
-						dynamic = DynamicData(
+						dynamic = DynamicUiState(
 							dynamic = 0.431,
 							percent = 1.2441f
 						)
