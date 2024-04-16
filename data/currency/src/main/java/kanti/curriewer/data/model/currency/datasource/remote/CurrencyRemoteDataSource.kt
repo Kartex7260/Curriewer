@@ -6,5 +6,5 @@ import kanti.curriewer.shared.result.RemoteError
 
 interface CurrencyRemoteDataSource {
 
-	fun getAllCurrenciesData(): DataResult<List<CurrencyData>, RemoteError>
+	suspend fun getAllCurrenciesData(): DataResult<List<CurrencyData>, RemoteError>
 }

@@ -1,14 +1,15 @@
 package kanti.curriewer.data.model.currency
 
-import kanti.curriewer.data.model.currency.datasource.remote.CurrencyRemoteDataSource
 import kanti.curriewer.data.model.currency.datasource.local.CurrencyDataLocalDataSource
 import kanti.curriewer.data.model.currency.datasource.local.CurrencyValuesLocalDataSource
+import kanti.curriewer.data.model.currency.datasource.remote.CurrencyRemoteDataSource
 import kanti.curriewer.shared.result.DataError
 import kanti.curriewer.shared.result.DataResult
 import kanti.curriewer.shared.result.NotFoundError
 import kanti.curriewer.shared.result.alsoIfNotError
 import kanti.curriewer.shared.result.runIfNotError
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import javax.inject.Inject
@@ -42,7 +43,22 @@ class CurrencyRepositoryImpl @Inject constructor(
 	}
 
 	override suspend fun getAllCurrencyCodes(): DataResult<Sequence<String>, DataError> {
-		TODO("Not yet implemented")
+		return withContext(Dispatchers.Default) {
+			val remoteResult = remoteDataSource.getAllCurrenciesData()
+
+			val remoteError = remoteResult.error
+			if (remoteError != null) {
+				val localResult = dataLocalDataSource.getAllCurrenciesData()
+				return@withContext DataResult.Error(remoteError, localResult.map { it.code })
+			}
+
+			remoteResult.runIfNotError { currenciesData ->
+				launch {
+					dataLocalDataSource.replace(currenciesData)
+				}
+				DataResult.Success(currenciesData.asSequence().map { it.code })
+			}
+		}
 	}
 
 	override suspend fun getRange(
