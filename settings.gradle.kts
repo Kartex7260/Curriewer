@@ -23,4 +23,5 @@ rootProject.name = "Curriewer"
 include(":app:phone")
 include(":ui:common")
 include(":feat:currency")
+include(":domain:currencies:manipulation")
 include(":data:currency")

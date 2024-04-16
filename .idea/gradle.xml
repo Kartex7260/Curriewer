@@ -11,6 +11,11 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/app/phone" />
+            <option value="$PROJECT_DIR$/data" />
+            <option value="$PROJECT_DIR$/data/currency" />
+            <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/domain/currencies" />
+            <option value="$PROJECT_DIR$/domain/currencies/maniplation" />
             <option value="$PROJECT_DIR$/feat" />
             <option value="$PROJECT_DIR$/feat/currency" />
             <option value="$PROJECT_DIR$/ui" />
