@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/data/app/impl" />
             <option value="$PROJECT_DIR$/data/app/impl/datastore" />
             <option value="$PROJECT_DIR$/data/currency" />
+            <option value="$PROJECT_DIR$/data/retrofit" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/domain/currencies" />
             <option value="$PROJECT_DIR$/domain/currencies/manipulation" />
