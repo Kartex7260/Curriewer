@@ -1,11 +1,10 @@
-package kanti.curriewer.data.model.currency
+package kanti.curriewer.data.model.currency.datasource
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 data class CurrencyWithTime(
 	val code: String = "",
-	val title: String = "",
 	val dateTime: Instant = Clock.System.now(),
 	val value: Double = 0.0
 )

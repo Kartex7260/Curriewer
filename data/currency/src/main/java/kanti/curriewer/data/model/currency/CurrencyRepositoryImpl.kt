@@ -1,17 +1,17 @@
 package kanti.curriewer.data.model.currency
 
+import kanti.curriewer.data.model.currency.datasource.CurrencyData
 import kanti.curriewer.data.model.currency.datasource.local.CurrencyDataLocalDataSource
 import kanti.curriewer.data.model.currency.datasource.local.CurrencyValuesLocalDataSource
 import kanti.curriewer.data.model.currency.datasource.remote.CurrencyRemoteDataSource
 import kanti.curriewer.shared.result.DataError
 import kanti.curriewer.shared.result.DataResult
+import kanti.curriewer.shared.result.NoConnectionError
 import kanti.curriewer.shared.result.NotFoundError
 import kanti.curriewer.shared.result.ValueIsNullError
-import kanti.curriewer.shared.result.alsoIfNotError
 import kanti.curriewer.shared.result.runIfNotError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
@@ -44,8 +44,77 @@ class CurrencyRepositoryImpl @Inject constructor(
 		end: Instant,
 		start: Instant,
 		accuracy: RangeAccuracy
-	): DataResult<List<CurrencySpan>, DataError> {
-		TODO("Not yet implemented")
+	): DataResult<List<CurrencySpan>, DataError> = withContext(Dispatchers.Default) {
+		val currenciesDeferred = async {
+			remoteDataSource.getCurrencyRanges(
+				baseCurrencyCode = baseCurrencyCode,
+				start = start,
+				end = end,
+				accuracy = accuracy
+			)
+		}
+		val titlesDeferred = async { getTitles() }
+		currenciesDeferred.start()
+		titlesDeferred.start()
+
+		val currenciesResult = currenciesDeferred.await()
+		val titlesResult = titlesDeferred.await()
+
+		val titlesError = titlesResult.error
+		if (titlesError != null)
+			return@withContext DataResult.Error(titlesError)
+
+		val titles = titlesResult.value ?: return@withContext DataResult
+			.Error(ValueIsNullError(CurrencyRepositoryImpl::class.java.name
+						+ ": getAllSpans(): titles"))
+
+		val currenciesError = currenciesResult.error
+		if (currenciesError is NoConnectionError) {
+			val localResult = valueLocalDataSource.getCurrencyRanges(
+				baseCurrencyCode = baseCurrencyCode,
+				start = start,
+				end = end,
+				accuracy = accuracy
+			)
+
+			return@withContext DataResult.Error(
+				error = currenciesError,
+				value = localResult.value
+					?.map { it.toCurrencySpan(titles) }
+			)
+		}
+
+		currenciesResult.runIfNotError { currencies ->
+			launch {
+				valueLocalDataSource.replace(
+					currenciesWithTime = currencies.flatMap { it.value }
+				)
+			}
+
+			DataResult.Success(
+				value = currencies.map { entry ->
+					entry.toCurrencySpan(titles)
+				}
+			)
+		}
+	}
+
+	private suspend fun getTitles(): DataResult<List<CurrencyData>, DataError> {
+		val remoteData = remoteDataSource.getCurrenciesData()
+
+		val remoteError = remoteData.error
+		if (remoteError is NoConnectionError) {
+			val localResult = dataLocalDataSource.getCurrenciesData()
+
+			return DataResult.Error(
+				error = remoteError,
+				value = localResult.value
+			)
+		}
+
+		return remoteData.runIfNotError {
+			DataResult.Success(it)
+		}
 	}
 
 	private suspend fun loadCurrenciesData(): DataError? {

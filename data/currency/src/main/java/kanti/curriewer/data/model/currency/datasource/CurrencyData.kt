@@ -1,4 +1,4 @@
-package kanti.curriewer.data.model.currency
+package kanti.curriewer.data.model.currency.datasource
 
 data class CurrencyData(
 	val code: String = "",
