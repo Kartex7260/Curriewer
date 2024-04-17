@@ -1,7 +1,18 @@
 package kanti.curriewer.shared.result
 
-sealed interface DataError
+sealed interface DataError {
 
-data object NoError : DataError
+	val message: String?
+	val throwable: Throwable?
+}
 
-class ValueIsNullError(message: String) : DataError
+data object NoError : DataError {
+
+	override val message: String? = null
+	override val throwable: Throwable? = null
+}
+
+class ValueIsNullError(
+	override val message: String,
+	override val throwable: Throwable? = null
+) : DataError

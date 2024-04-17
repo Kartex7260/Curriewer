@@ -2,25 +2,43 @@ package kanti.curriewer.shared.result
 
 interface RemoteError : DataError
 
-data object NoConnectionError : RemoteError
+data class NoConnectionError(
+	override val message: String? = null,
+	override val throwable: Throwable? = null
+) : RemoteError
 
-data object NotAllowedUseEndpointError : RemoteError
+data class NotAllowedUseEndpointError(
+	override val message: String? = null,
+	override val throwable: Throwable? = null
+) : RemoteError
 
-data object NotFoundEndpointError : RemoteError
+data class NotFoundEndpointError(
+	override val message: String? = null,
+	override val throwable: Throwable? = null
+) : RemoteError
 
-data object ValidationError : RemoteError
+data class ValidationError(
+	override val message: String? = null,
+	override val throwable: Throwable? = null
+) : RemoteError
 
-data object LimitBeenReached : RemoteError
+data class LimitBeenReached(
+	override val message: String? = null,
+	override val throwable: Throwable? = null
+) : RemoteError
 
-data object ServerError : RemoteError
+data class ServerError(
+	override val message: String? = null,
+	override val throwable: Throwable? = null
+) : RemoteError
 
 fun remoteErrorFromCode(code: Int): RemoteError? {
 	return when (code) {
-		403 -> NotAllowedUseEndpointError
-		404 -> NotFoundEndpointError
-		422 -> ValidationError
-		429 -> LimitBeenReached
-		500 -> ServerError
+		403 -> NotAllowedUseEndpointError()
+		404 -> NotFoundEndpointError()
+		422 -> ValidationError()
+		429 -> LimitBeenReached()
+		500 -> ServerError()
 		else -> null
 	}
 }

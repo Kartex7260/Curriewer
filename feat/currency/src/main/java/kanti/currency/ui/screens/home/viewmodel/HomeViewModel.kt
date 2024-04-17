@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import kanti.currency.ui.util.toCurrencySpan
 import kanti.curriewer.data.app.AppDataRepository
 import kanti.curriewer.data.model.currency.CurrencyRepository
-import kanti.curriewer.domain.currencies.GetCurrencySpansUseCase
 import kanti.curriewer.shared.result.DataError
 import kanti.curriewer.shared.result.DataResult
 import kanti.curriewer.shared.result.runIfNotError
@@ -22,8 +21,7 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
 	appDataRepository: AppDataRepository,
-	currencyRepository: CurrencyRepository,
-	getCurrencySpansUseCase: GetCurrencySpansUseCase
+	currencyRepository: CurrencyRepository
 ) : ViewModel() {
 
 	val baseCurrency: StateFlow<DataResult<CurrencyUiState, DataError>> = appDataRepository.appData
@@ -41,8 +39,8 @@ class HomeViewModel @Inject constructor(
 
 	val currencies: StateFlow<DataResult<List<CurrencySpanUiState>, DataError>> = appDataRepository.appData
 		.map { appData ->
-			val result = getCurrencySpansUseCase(
-				baseCurrencyCode = appData.baseCurrencyCode
+			val result = currencyRepository.getAllSpans(
+				baseCurrencyCode = appData.baseCurrencyCode,
 			)
 
 			result.runIfNotError { currencySpans ->

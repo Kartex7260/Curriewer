@@ -1,6 +1,6 @@
 package kanti.currency.ui.util
 
-import kanti.curriewer.domain.currencies.CurrencySpan
+import kanti.curriewer.data.model.currency.CurrencySpan
 import kanti.curriewer.ui.components.CurrencyUiState
 import kanti.curriewer.ui.components.DynamicUiState
 

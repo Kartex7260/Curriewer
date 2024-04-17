@@ -9,20 +9,5 @@ import kotlinx.datetime.Instant
 
 interface CurrencyRemoteDataSource {
 
-	suspend fun getAllCurrenciesData(): DataResult<List<CurrencyData>, RemoteError>
-
-	suspend fun getRange(
-		baseCurrencyCode: String,
-		currencyCode: String,
-		end: Instant,
-		start: Instant,
-		accuracy: RangeAccuracy
-	): DataResult<List<CurrencyWithTime>, RemoteError>
-
-	suspend fun getRange(
-		baseCurrencyCode: String,
-		end: Instant,
-		start: Instant,
-		accuracy: RangeAccuracy
-	): DataResult<Map<String, CurrencyWithTime>, RemoteError>
+	suspend fun getCurrenciesData(): DataResult<List<CurrencyData>, RemoteError>
 }

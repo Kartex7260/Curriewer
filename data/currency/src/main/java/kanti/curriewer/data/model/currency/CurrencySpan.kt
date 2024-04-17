@@ -1,4 +1,4 @@
-package kanti.curriewer.domain.currencies
+package kanti.curriewer.data.model.currency
 
 data class CurrencySpan(
 	val code: String = "",

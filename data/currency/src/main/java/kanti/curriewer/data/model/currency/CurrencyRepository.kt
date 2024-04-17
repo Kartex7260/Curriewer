@@ -10,13 +10,10 @@ interface CurrencyRepository {
 
 	suspend fun getTitleByCode(currencyCode: String): DataResult<String, DataError>
 
-	suspend fun getAllCurrencyCodes(): DataResult<Sequence<String>, DataError>
-
-	suspend fun getRange(
+	suspend fun getAllSpans(
 		baseCurrencyCode: String,
-		currencyCode: String,
 		end: Instant = Clock.System.now(),
 		start: Instant = end.minusDay(),
 		accuracy: RangeAccuracy = RangeAccuracy.DEFAULT
-	): DataResult<List<CurrencyWithTime>, DataError>
+	): DataResult<List<CurrencySpan>, DataError>
 }

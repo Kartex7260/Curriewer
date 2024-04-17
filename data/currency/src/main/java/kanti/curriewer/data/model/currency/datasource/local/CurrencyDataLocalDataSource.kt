@@ -6,9 +6,7 @@ import kanti.curriewer.shared.result.LocalError
 
 interface CurrencyDataLocalDataSource {
 
-	suspend fun getAllCurrenciesData(): Sequence<CurrencyData>
-
 	suspend fun getTitle(currencyCode: String): DataResult<String, LocalError>
 
-	suspend fun replace(currencies: List<CurrencyData>)
+	suspend fun replace(currenciesData: List<CurrencyData>)
 }
