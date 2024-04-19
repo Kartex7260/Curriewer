@@ -1,5 +1,6 @@
 package kanti.curriewer.data.retrofit
 
+import kanti.curriewer.data.retrofit.currency.CurrencyService
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -11,6 +12,9 @@ fun retrofitBuilder(): Retrofit = Retrofit.Builder()
 	.baseUrl(baseLink)
 	.client(httpBuilder())
 	.build()
+
+fun currencyServiceBuilder(retrofit: Retrofit): CurrencyService = retrofit
+	.create(CurrencyService::class.java)
 
 fun httpBuilder(): OkHttpClient = OkHttpClient.Builder()
 	.addInterceptor(apiKeyInterceptor)
